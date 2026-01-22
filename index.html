@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expository Writing Coach - P4</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #0284c7;
+            --primary-dark: #0369a1;
+            --accent: #06b6d4;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --error: #ef4444;
+            --bg: #f8fafc;
+            --surface: #ffffff;
+            --text: #1e293b;
+            --text-light: #64748b;
+            --border: #e2e8f0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 12px rgba(2, 132, 199, 0.2);
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            font-size: 1.1em;
+            opacity: 0.95;
+        }
+
+        header .subtitle {
+            font-size: 0.95em;
+            opacity: 0.9;
+            margin-top: 8px;
+        }
+
+        .welcome-section {
+            display: none;
+        }
+
+        .welcome-section.active {
+            display: block;
+        }
+
+        .content-card {
+            background: var(--surface);
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .card-title {
+            font-size: 1.3em;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+
+        .info-text {
+            font-size: 1.05em;
+            color: var(--text);
+            margin-bottom: 20px;
+            line-height: 1.7;
+        }
+
+        .input-section {
+            display: none;
+        }
+
+        .input-section.active {
+            display: block;
+        }
+
+        .textarea-wrapper {
+            margin-bottom: 20px;
+        }
+
+        .textarea-label {
+            font-weight: 600;
+            display: block;
+            margin-bottom: 10px;
+            color: var(--text);
+            font-size: 0.95em;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 200px;
+            padding: 20px;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            font-family: 'Segoe UI', sans-serif;
+            font-size: 1em;
+            resize: vertical;
+            transition: border-color 0.3s;
+            color: var(--text);
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.1);
+        }
+
+        textarea::placeholder {
+            color: var(--text-light);
+        }
+
+        .char-count {
+            text-align: right;
+            color: var(--text-light);
+            font-size: 0.9em;
+            margin-top: 8px;
+        }
+
+        .feedback-areas {
+            margin-bottom: 25px;
+        }
+
+        .feedback-areas-label {
+            font-weight: 600;
+            display: block;
+            margin-bottom: 15px;
+            color: var(--text);
+            font-size: 0.95em;
+        }
+
+        .feedback-areas-info {
+            background: #f0f9ff;
+            border-left: 4px solid var(--primary);
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            font-size: 0.9em;
+            color: var(--text);
+        }
+
+        .checkbox-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            background: var(--surface);
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .checkbox-item:hover {
+            border-color: var(--primary);
+            background: #f0f9ff;
+        }
+
+        .checkbox-item input[type="checkbox"] {
+            cursor: pointer;
+            width: 18px;
+            height: 18px;
+            margin-right: 10px;
+            accent-color: var(--primary);
+        }
+
+        .checkbox-item label {
+            cursor: pointer;
+            flex: 1;
+            font-weight: 500;
+            font-size: 0.95em;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(2, 132, 199, 0.3);
+        }
+
+        .btn-primary:disabled {
+            background: #cbd5e1;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-secondary {
+            background: var(--border);
+            color: var(--text);
+        }
+
+        .btn-secondary:hover {
+            background: #cbd5e1;
+        }
+
+        .feedback-section {
+            display: none;
+        }
+
+        .feedback-section.active {
+            display: block;
+        }
+
+        .feedback-card {
+            background: var(--surface);
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .feedback-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .feedback-icon {
+            font-size: 2em;
+        }
+
+        .feedback-title {
+            font-size: 1.2em;
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        .feedback-area-title {
+            font-size: 1.1em;
+            font-weight: 600;
+            color: var(--primary);
+            background: #f0f9ff;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border-left: 4px solid var(--accent);
+        }
+
+        .feedback-category {
+            margin-bottom: 20px;
+        }
+
+        .category-title {
+            font-size: 1em;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .category-content {
+            background: #f9fafb;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid var(--accent);
+            line-height: 1.7;
+            font-size: 0.95em;
+        }
+
+        .category-item {
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+        }
+
+        .category-item:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .strength {
+            color: var(--success);
+        }
+
+        .question {
+            color: var(--warning);
+        }
+
+        .target {
+            color: var(--primary);
+        }
+
+        .vocabulary {
+            color: #8b5cf6;
+        }
+
+        .example-text {
+            background: #f0f9ff;
+            padding: 10px;
+            border-radius: 6px;
+            font-style: italic;
+            font-size: 0.9em;
+            margin-top: 8px;
+            border-left: 3px solid var(--accent);
+        }
+
+        .highlight {
+            background: #fef3c7;
+            padding: 2px 6px;
+            border-radius: 3px;
+        }
+
+        .feedback-intro {
+            background: #f0fdf4;
+            border-left: 4px solid var(--success);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 0.95em;
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.8em;
+            }
+
+            textarea {
+                min-height: 200px;
+                font-size: 16px;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            button {
+                width: 100%;
+            }
+
+            .checkbox-group {
+                grid-template-columns: 1fr;
+            }
+
+            .feedback-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>✍️ Expository Writing Coach</h1>
+            <p>Improve your expository writing skills</p>
+            <div class="subtitle">For Primary 4 Students</div>
+        </header>
+
+        <!-- Welcome Section -->
+        <div class="welcome-section active">
+            <div class="content-card">
+                <h2 class="card-title">Welcome! 👋</h2>
+                <p class="info-text">
+                    This tool helps you improve your <strong>expository writing</strong> skills. Expository writing is when you explain or inform about a topic using clear, organized ideas.
+                </p>
+                <p class="info-text">
+                    <strong>How to use:</strong>
+                </p>
+                <ol style="margin-left: 20px; line-height: 2;">
+                    <li>Paste your paragraph or sentences below</li>
+                    <li>Select the areas you want to improve</li>
+                    <li>Get personalized feedback to help you write better</li>
+                    <li>Learn what to change and how to improve</li>
+                </ol>
+                <div class="button-group">
+                    <button class="btn-primary" onclick="startWriting()">Start Writing Coach</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Input Section -->
+        <div class="input-section">
+            <div class="content-card">
+                <h2 class="card-title">Enter Your Writing</h2>
+                
+                <div class="textarea-wrapper">
+                    <label class="textarea-label">📝 Paste or type your paragraph/sentences:</label>
+                    <textarea id="userText" placeholder="Paste your expository writing here... You can enter one sentence or a full paragraph."></textarea>
+                    <div class="char-count"><span id="charCount">0</span> characters</div>
+                </div>
+
+                <div class="feedback-areas">
+                    <label class="feedback-areas-label">🎯 Select areas you want to improve:</label>
+                    <div class="feedback-areas-info">
+                        Choose one or more areas. We'll give you specific feedback on each area you select.
+                    </div>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="intro" value="introduction">
+                            <label for="intro">My Introduction</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="body" value="body">
+                            <label for="body">Body Paragraph</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="conclusion" value="conclusion">
+                            <label for="conclusion">My Conclusion</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="topics" value="topic_sentences">
+                            <label for="topics">Topic Sentences</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="vocab" value="vocabulary">
+                            <label for="vocab">Vocabulary</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="linking" value="linking_words">
+                            <label for="linking">Linking Words</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="button-group">
+                    <button class="btn-primary" onclick="getAIFeedback()">Get AI Feedback</button>
+                    <button class="btn-secondary" onclick="goBack()">Back to Home</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Feedback Section -->
+        <div class="feedback-section">
+            <div class="feedback-card">
+                <div class="feedback-header">
+                    <span class="feedback-icon">⭐</span>
+                    <span class="feedback-title">Your Personalized Feedback</span>
+                </div>
+
+                <div id="feedbackContent"></div>
+            </div>
+
+            <div class="button-group">
+                <button class="btn-primary" onclick="startAgain()">Review Another Piece</button>
+                <button class="btn-secondary" onclick="goBack()">Back to Home</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentText = '';
+        let selectedAreas = [];
+
+        function startWriting() {
+            document.querySelector('.welcome-section').classList.remove('active');
+            document.querySelector('.input-section').classList.add('active');
+        }
+
+        function goBack() {
+            document.querySelector('.input-section').classList.remove('active');
+            document.querySelector('.feedback-section').classList.remove('active');
+            document.querySelector('.welcome-section').classList.add('active');
+            document.getElementById('userText').value = '';
+            document.getElementById('charCount').textContent = '0';
+            document.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
+        }
+
+        function startAgain() {
+            document.querySelector('.feedback-section').classList.remove('active');
+            document.querySelector('.input-section').classList.add('active');
+            document.getElementById('userText').value = '';
+            document.getElementById('charCount').textContent = '0';
+            document.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
+        }
+
+        function updateCharCount() {
+            const text = document.getElementById('userText').value;
+            document.getElementById('charCount').textContent = text.length;
+        }
+
+        document.getElementById('userText')?.addEventListener('input', updateCharCount);
+
+        function getSelectedAreas() {
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
+            return Array.from(checkboxes).map(cb => cb.value);
+        }
+
+        function getAIFeedback() {
+            currentText = document.getElementById('userText').value.trim();
+            selectedAreas = getSelectedAreas();
+
+            if (!currentText) {
+                alert('Please enter your writing first!');
+                return;
+            }
+
+            if (currentText.length < 20) {
+                alert('Please write at least 20 characters for meaningful feedback.');
+                return;
+            }
+
+            if (selectedAreas.length === 0) {
+                alert('Please select at least one area you want to improve.');
+                return;
+            }
+
+            const feedback = generateFeedback(currentText, selectedAreas);
+            displayFeedback(feedback);
+
+            document.querySelector('.input-section').classList.remove('active');
+            document.querySelector('.feedback-section').classList.add('active');
+        }
+
+        function generateFeedback(text, areas) {
+            const sentences = text.split(/[.!?]+/).filter(s => s.trim());
+            const words = text.split(/\s+/);
+            const wordCount = words.length;
+
+            let feedback = {};
+
+            // Introduction feedback
+            if (areas.includes('introduction')) {
+                feedback.introduction = {
+                    strengths: [],
+                    questions: [],
+                    targets: [],
+                    vocabulary: []
+                };
+
+                // Check if text starts with an engaging hook
+                const firstWord = words[0].toLowerCase();
+                const starterWords = ['did', 'have', 'would', 'can', 'what', 'why', 'how'];
+                
+                if (starterWords.some(w => firstWord.includes(w))) {
+                    feedback.introduction.strengths.push('You started with a question or interesting hook!');
+                } else {
+                    feedback.introduction.questions.push('Does your introduction grab the reader\'s attention? Consider starting with a question or interesting fact.');
+                }
+
+                if (wordCount > 15) {
+                    feedback.introduction.strengths.push('Your introduction has good length to introduce the topic.');
+                } else {
+                    feedback.introduction.targets.push('Make your introduction longer to better introduce your topic. Aim for 15-20 words.');
+                }
+
+                if (text.toLowerCase().includes('is') || text.toLowerCase().includes('are')) {
+                    feedback.introduction.strengths.push('You used a verb to explain your topic.');
+                } else {
+                    feedback.introduction.targets.push('Use action verbs (is, are, shows, explains) to introduce your topic clearly.');
+                }
+
+                feedback.introduction.vocabulary = [
+                    { weak: 'thing', strong: 'topic, subject, or issue' },
+                    { weak: 'good', strong: 'interesting, important, or fascinating' },
+                    { weak: 'big', strong: 'significant, major, or important' }
+                ];
+            }
+
+            // Body paragraph feedback
+            if (areas.includes('body')) {
+                feedback.body = {
+                    strengths: [],
+                    questions: [],
+                    targets: [],
+                    vocabulary: []
+                };
+
+                if (sentences.length >= 2) {
+                    feedback.body.strengths.push('You wrote multiple sentences to develop your ideas.');
+                } else {
+                    feedback.body.targets.push('A body paragraph should have 2-4 sentences with supporting details.');
+                }
+
+                if (text.includes(',')) {
+                    feedback.body.strengths.push('You used commas to add more details to your sentences.');
+                } else {
+                    feedback.body.questions.push('Can you add more details using commas? Example: "Trees, which are tall, provide shade."');
+                }
+
+                const detailWords = ['example', 'reason', 'because', 'such as', 'like', 'for instance'];
+                if (detailWords.some(d => text.toLowerCase().includes(d))) {
+                    feedback.body.strengths.push('You included examples or reasons to support your ideas.');
+                } else {
+                    feedback.body.targets.push('Add examples or reasons to support your main idea. Use "such as," "for example," or "because."');
+                }
+
+                feedback.body.vocabulary = [
+                    { weak: 'show', strong: 'demonstrate, illustrate, or reveal' },
+                    { weak: 'help', strong: 'support, assist, or contribute' },
+                    { weak: 'interesting', strong: 'intriguing, compelling, or captivating' }
+                ];
+            }
+
+            // Conclusion feedback
+            if (areas.includes('conclusion')) {
+                feedback.conclusion = {
+                    strengths: [],
+                    questions: [],
+                    targets: [],
+                    vocabulary: []
+                };
+
+                if (text.toLowerCase().includes('in conclusion') || text.toLowerCase().includes('finally') || text.toLowerCase().includes('therefore')) {
+                    feedback.conclusion.strengths.push('You used a conclusion phrase to signal the ending.');
+                } else {
+                    feedback.conclusion.questions.push('Does your conclusion clearly wrap up your writing? Consider using "In conclusion," "Finally," or "Therefore."');
+                }
+
+                if (sentences.length > 0) {
+                    const lastSentence = sentences[sentences.length - 1];
+                    if (lastSentence.length > 10) {
+                        feedback.conclusion.strengths.push('Your conclusion has a complete thought.');
+                    } else {
+                        feedback.conclusion.targets.push('Make your conclusion sentence stronger and more complete. Restate your main idea.');
+                    }
+                }
+
+                feedback.conclusion.targets.push('Restate your main idea in a new way. Don\'t copy your introduction exactly.');
+
+                feedback.conclusion.vocabulary = [
+                    { weak: 'so', strong: 'therefore, as a result, or consequently' },
+                    { weak: 'shows', strong: 'proves, demonstrates, or establishes' },
+                    { weak: 'most important', strong: 'crucial, essential, or vital' }
+                ];
+            }
+
+            // Topic sentences feedback
+            if (areas.includes('topic_sentences')) {
+                feedback.topic_sentences = {
+                    strengths: [],
+                    questions: [],
+                    targets: [],
+                    vocabulary: []
+                };
+
+                const hasTopicSignals = text.toLowerCase().includes('the main') || text.toLowerCase().includes('first') || text.toLowerCase().includes('important');
+                
+                if (hasTopicSignals) {
+                    feedback.topic_sentences.strengths.push('You used signal words to introduce your main idea.');
+                } else {
+                    feedback.topic_sentences.targets.push('Start with signal words like "The main idea," "First," or "Most importantly" to introduce your topic sentence.');
+                }
+
+                if (wordCount >= 12) {
+                    feedback.topic_sentences.strengths.push('Your topic sentence has enough detail.');
+                } else {
+                    feedback.topic_sentences.targets.push('Make your topic sentence 10-15 words long to clearly state your main idea.');
+                }
+
+                feedback.topic_sentences.questions.push('Does your topic sentence answer: What am I explaining? Why is it important?');
+
+                feedback.topic_sentences.vocabulary = [
+                    { weak: 'about', strong: 'concerning, regarding, or addressing' },
+                    { weak: 'main', strong: 'primary, principal, or central' },
+                    { weak: 'tell', strong: 'explain, describe, or clarify' }
+                ];
+            }
+
+            // Vocabulary feedback
+            if (areas.includes('vocabulary')) {
+                feedback.vocabulary = {
+                    strengths: [],
+                    questions: [],
+                    targets: [],
+                    vocabulary: []
+                };
+
+                const uniqueWords = new Set(words.map(w => w.toLowerCase()));
+                const variety = Math.round((uniqueWords.size / words.length) * 100);
+
+                if (variety > 60) {
+                    feedback.vocabulary.strengths.push('You used a good variety of different words!');
+                } else {
+                    feedback.vocabulary.questions.push('Are you repeating the same words? Try using synonyms to make your writing more interesting.');
+                }
+
+                const advancedWords = text.match(/\b(discover|demonstrate|illustrate|analyze|significant|unique|remarkable)\b/gi);
+                if (advancedWords) {
+                    feedback.vocabulary.strengths.push(`Great job using advanced words like "${advancedWords[0]}"!`);
+                } else {
+                    feedback.vocabulary.targets.push('Try using more advanced vocabulary. Replace simple words with more sophisticated ones.');
+                }
+
+                feedback.vocabulary.vocabulary = [
+                    { weak: 'good', strong: 'excellent, outstanding, or remarkable' },
+                    { weak: 'bad', strong: 'negative, harmful, or detrimental' },
+                    { weak: 'many', strong: 'numerous, several, or countless' },
+                    { weak: 'think', strong: 'believe, consider, or conclude' },
+                    { weak: 'get', strong: 'obtain, acquire, or receive' }
+                ];
+            }
+
+            // Linking words feedback
+            if (areas.includes('linking_words')) {
+                feedback.linking_words = {
+                    strengths: [],
+                    questions: [],
+                    targets: [],
+                    vocabulary: []
+                };
+
+                const linkingWords = ['and', 'but', 'because', 'also', 'first', 'second', 'next', 'finally', 'however', 'therefore', 'furthermore', 'in addition', 'moreover', 'consequently'];
+                const foundLinking = linkingWords.filter(w => text.toLowerCase().includes(w));
+
+                if (foundLinking.length > 2) {
+                    feedback.linking_words.strengths.push(`You used linking words to connect your ideas: ${foundLinking.slice(0, 3).join(', ')}`);
+                } else if (foundLinking.length > 0) {
+                    feedback.linking_words.strengths.push(`You used some linking words like "${foundLinking[0]}".`);
+                } else {
+                    feedback.linking_words.targets.push('Add linking words to connect your ideas. Examples: and, but, because, also, first, next, finally.');
+                }
+
+                if (sentences.length > 1) {
+                    feedback.linking_words.questions.push('Are your sentences connected smoothly? Use linking words to show how ideas relate to each other.');
+                }
+
+                feedback.linking_words.targets.push('Use more variety in linking words to show different types of connections between sentences.');
+
+                feedback.linking_words.vocabulary = [
+                    { weak: 'and', strong: 'in addition, moreover, furthermore' },
+                    { weak: 'but', strong: 'however, nevertheless, on the other hand' },
+                    { weak: 'because', strong: 'since, as, due to' },
+                    { weak: 'so', strong: 'therefore, consequently, thus' },
+                    { weak: 'after that', strong: 'subsequently, later, following this' }
+                ];
+            }
+
+            return feedback;
+        }
+
+        function displayFeedback(feedback) {
+            let html = '<div class="feedback-intro">📊 Here\'s your personalized feedback on the areas you selected:</div>';
+
+            const areaNames = {
+                introduction: 'My Introduction',
+                body: 'Body Paragraph',
+                conclusion: 'My Conclusion',
+                topic_sentences: 'Topic Sentences',
+                vocabulary: 'Vocabulary',
+                linking_words: 'Linking Words'
+            };
+
+            selectedAreas.forEach(area => {
+                if (feedback[area]) {
+                    const areaFeedback = feedback[area];
+                    html += `<div class="feedback-area-title">🎯 ${areaNames[area]}</div>`;
+
+                    // Strengths
+                    if (areaFeedback.strengths && areaFeedback.strengths.length > 0) {
+                        html += '<div class="feedback-category">';
+                        html += '<div class="category-title"><span class="strength">✅ Strengths</span></div>';
+                        html += '<div class="category-content">';
+                        areaFeedback.strengths.forEach(strength => {
+                            html += `<div class="category-item">${strength}</div>`;
+                        });
+                        html += '</div></div>';
+                    }
+
+                    // Questions to Improve
+                    if (areaFeedback.questions && areaFeedback.questions.length > 0) {
+                        html += '<div class="feedback-category">';
+                        html += '<div class="category-title"><span class="question">❓ Questions to Improve</span></div>';
+                        html += '<div class="category-content">';
+                        areaFeedback.questions.forEach(question => {
+                            html += `<div class="category-item">• ${question}</div>`;
+                        });
+                        html += '</div></div>';
+                    }
+
+                    // Targets for Improvement
+                    if (areaFeedback.targets && areaFeedback.targets.length > 0) {
+                        html += '<div class="feedback-category">';
+                        html += '<div class="category-title"><span class="target">🎯 Targets for Improvement</span></div>';
+                        html += '<div class="category-content">';
+                        areaFeedback.targets.forEach(target => {
+                            html += `<div class="category-item">→ ${target}</div>`;
+                        });
+                        html += '</div></div>';
+                    }
+
+                    // Vocabulary suggestions
+                    if (areaFeedback.vocabulary && areaFeedback.vocabulary.length > 0) {
+                        html += '<div class="feedback-category">';
+                        html += '<div class="category-title"><span class="vocabulary">💡 Key Vocabulary Suggestions</span></div>';
+                        html += '<div class="category-content">';
+                        areaFeedback.vocabulary.forEach(vocab => {
+                            html += `<div class="category-item">
+                                Instead of: <span class="highlight">"${vocab.weak}"</span>
+                                <br>Try: <span class="highlight">"${vocab.strong}"</span>
+                            </div>`;
+                        });
+                        html += '</div></div>';
+                    }
+
+                    html += '<div style="margin-bottom: 20px; border-bottom: 2px solid var(--border);"></div>';
+                }
+            });
+
+            document.getElementById('feedbackContent').innerHTML = html;
+        }
+    </script>
+</body>
+</html>
